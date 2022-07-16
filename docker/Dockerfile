@@ -12,8 +12,8 @@ LABEL maintainer="The resources team <resources@teams.rust-embedded.org>, Andre 
 
 # Ruby gems
 COPY Gemfile .
-COPY ./Modules/.gdbinit ~/
-ADD ./Modules ./Modules
+#COPY ./Modules/.gdbinit ~/
+#ADD ./Modules ./Modules
 RUN set -ex;                                      \
     tempPkgs='                                    \
         automake                                  \
@@ -41,8 +41,8 @@ RUN set -ex;                                      \
         ruby-dev                                  \
     ;                                             \
     # GCC AArch64 tools
-    #if [ "$(uname -m)" = "aarch64" ]; then wget ${GCC_AARCH64}; else wget ${GCC_X86_64}; fi; \
-    tar -xf Modules/gcc-arm-10*;                                                                     \
+    if [ "$(uname -m)" = "aarch64" ]; then wget ${GCC_AARCH64}; else wget ${GCC_X86_64}; fi; \
+    tar -xf gcc-arm-10*;                                                                     \
     cp                                                                                       \
         gcc-arm-10*/bin/aarch64-none-elf-objdump                                             \
         /usr/local/bin/aarch64-elf-objdump;                                                  \
@@ -58,25 +58,25 @@ RUN set -ex;                                      \
     bundle config set --local without 'development'; \
     bundle install --retry 3;                        \
     # QEMU
-    #git clone https://gitlab.com/qemu-project/qemu.git;        \
-    cd ./Modules/qemu;                                                   \
-    #git checkout tags/v6.1.0;                                  \
+    git clone https://gitlab.com/qemu-project/qemu.git;        \
+    cd ./qemu;                                                   \
+    git checkout tags/v6.1.0;                                  \
     ./configure --target-list=aarch64-softmmu --enable-modules \
         --enable-tcg-interpreter --enable-debug-tcg            \
         --python=/usr/bin/python3;                             \
     make -j10;                                                 \
     make install;                                              \
-    cd ../..;                                                     \
+    cd ..;                                                     \
     rm -rf ./Modules/qemu;                                               \
     # Openocd
-    #git clone --depth 1 https://git.code.sf.net/p/openocd/code openocd; \
-    cd ./Modules/openocd;                                                         \
+    git clone --depth 1 https://git.code.sf.net/p/openocd/code openocd; \
+    cd ./openocd;                                                         \
     ./bootstrap;                                                        \
     ./configure --enable-ftdi;                                          \
     make -j10;                                                          \
     make install;                                                       \
     # GDB
-    #wget -P ~ https://raw.githubusercontent.com/cyrus-and/gdb-dashboard/master/.gdbinit; \
+    wget -P ~ https://raw.githubusercontent.com/cyrus-and/gdb-dashboard/master/.gdbinit; \
     # Cleanup
     apt-get purge -y --auto-remove $tempPkgs; \
     apt-get autoremove -q -y;                 \

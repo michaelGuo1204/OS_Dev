@@ -2,3 +2,5 @@
 #![no_std]
 
 mod bsp;
+mod cpu;
+mod panicwait;

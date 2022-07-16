@@ -33,6 +33,6 @@ SECTIONS
     .text :
     {
         KEEP(*(.text._start))
-    } :segement_code
+    } :segment_code
     /* :segement_code means assign this section to a segement described in the program header */
 }

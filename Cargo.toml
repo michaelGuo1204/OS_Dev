@@ -3,6 +3,20 @@ name = "osdev"
 version = "0.1.0"
 edition = "2021"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[profile.release]
+lto = true
+
+[features]
+default = []
+rpi3 = []
+rpi4 = []
+
+[[bin]]
+name = "kernel"
+path = "src/main.rs"
+
+##--------------------------------------------------------------------------------------------------
+## Dependencies
+##--------------------------------------------------------------------------------------------------
 
 [dependencies]

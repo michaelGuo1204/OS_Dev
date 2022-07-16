@@ -1,6 +1,6 @@
-use core::panic::PanicInfo
+use core::panic::PanicInfo;
 
 #[panic_handler]
 fn panic(_info: &PanicInfo)-> !{
-    unimplemented!();
+    unimplemented!()
 }

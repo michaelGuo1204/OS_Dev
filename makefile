@@ -100,6 +100,7 @@ objdump: $(KERNEL_ELF)
 	$(call color_header, "Launching objdump")
 	@$(DOCKER_TOOLS) $(OBJDUMP_BINARY) --disassemble --demangle \
                 --section .text   \
+				--section .rodata \
                 $(KERNEL_ELF) | rustfilt
 
 nm: $(KERNEL_ELF)
